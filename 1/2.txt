@@ -1,0 +1,18 @@
+The escape sequences and their results  are the following:
+*Note: Results are compiler and interpreter dependant, and in the case of \a, system dependant. 
+My results are compiled with 'cc'  and viewed with the 'konsole' terminal.
+
+\a	Alert character. Does nothing. On older systems this would make a noise.
+\b	Backspace. Deletes the character previous to the escape.
+\e	Escape. Deletes the character after the escape.
+\f	Formfeed. Like a page break. Text will continue on the next row at the same position.
+\n	Newline. Text continues at next row at position 0.
+\r	Carriage return. Returns cursor to 0 position on same line. Anything after this escape will begin to overwrite what was before it.
+\t	Horizontal tab. What you'd expect.
+\v 	Vertical tab. Seems identical to formfeed.
+\\	Prints ' \ '.
+\?	Prints ' ? '.
+\'	Prints ' ' '.
+\"	Prints ' " '.
+
+You can also escape an octal or hexadecimal number to print out the corresponding character. \ooo \xhh
