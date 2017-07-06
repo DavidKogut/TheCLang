@@ -1,12 +1,16 @@
 #include <stdio.h>
 
+#define LOWER 0
+#define UPPER 300
+#define STEP 20
+
 void printHeader();
 void printFahrToCel(int lower, int upper, int step);
 
 main()
 {
     printHeader();
-    printFahrToCel(0, 300, 20);
+    printFahrToCel(LOWER, UPPER, STEP);
     
     return 0;
 }
