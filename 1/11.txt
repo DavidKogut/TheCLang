@@ -1,0 +1,34 @@
+How to test a word counting program:
+
+I'd suggest a set of inputs to run into the program, and deciding beforehand what the result for each case should be. 
+
+Have each set of inputs test one thing at a time so you'll know exactly what needs fixing.
+
+Spaces:
+"this is four words"
+4
+
+Tabs:
+"this   is  four    words"
+4
+
+Newlines:
+"this
+is
+four
+words"
+4
+
+Hyphenated words (according to your definition; we'll count them as one word):
+"Daughter-in-law is one word."
+4
+
+Contractions (we'll also count as one word):
+"You're sure this'll count to six."
+6
+
+Non-words (can words contain digits? Or symbols? We'll say yes, so long as it starts with a letter):
+"0therwise we would have to properly del!m!t punctuation @nd parentheses 99"
+8
+
+Having your test cases prepared beforehand helps you build a more functional program.
