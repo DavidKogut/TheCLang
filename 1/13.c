@@ -5,6 +5,8 @@
 #define MAX 10 //Max word length we're counting
 
 void printHorizontal(int wordLen[]);
+void printVertical(int wordLen[]);
+int getMax(int wordLen[]);
 
 int main() 
 {
@@ -34,8 +36,10 @@ int main()
         }
     }
     
+    printf("\n");
     printHorizontal(wordLen);
-
+    printf("\n");
+    printVertical(wordLen);
     return 0;
 }
 
@@ -57,4 +61,43 @@ void printHorizontal(int wordLen[])
         }
         printf("\n");
     }
+}
+
+void printVertical(int wordLen[])
+{
+    int i, most;
+    
+    for (most = getMax(wordLen); most > 0; most--)
+    {
+        for (i = 0; i < MAX; i++)
+        {
+            if (wordLen[i] >= most)
+                printf("# ");
+            else
+                printf("  ");
+        }
+        printf("\n");
+    }
+
+    for (i = 0; i < MAX; i++)
+    {
+        printf("%d ", i+1);
+    }
+    printf("\n");
+
+}
+
+int getMax(int wordLen[])
+{
+    int i, max;
+
+    max = 0;
+
+    for (i = 0; i < MAX; i++)
+    {
+        if (wordLen[i] > max)
+            max = wordLen[i];
+    }
+
+    return max;
 }
