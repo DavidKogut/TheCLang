@@ -2,7 +2,7 @@
 
 #define IN  1
 #define OUT 0
-#define MAX 10 //Max word length we're counting
+#define MAX 10 //Max word length we're counting, exceeding past 10 will break printing.
 
 void printHorizontal(int wordLen[]);
 void printVertical(int wordLen[]);
@@ -51,7 +51,7 @@ void printHorizontal(int wordLen[])
     for (i = 0; i < MAX; i++)
     {
         printf("%*d", 2, i+1);
-        if (i == MAX) 
+        if (i == MAX-1) 
             printf("+:");
         else
             printf(" :");
@@ -83,7 +83,7 @@ void printVertical(int wordLen[])
     {
         printf("%d ", i+1);
     }
-    printf("\n");
+    printf("\b+\n");
 
 }
 
