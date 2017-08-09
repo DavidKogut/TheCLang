@@ -7,7 +7,7 @@
 #define MAX     1000  //max line size
 
 int getLine(char s[], int lim);
-int entab(char s[], int index, int lim, int spaces);
+int entab(char s[], int index, int lim, int spaces, int c);
 
 int main()
 {
@@ -35,7 +35,7 @@ int getLine(char s[], int lim)
             if (c != ' ')
             {    
                 if (lastChar+1 < i)
-                    i = entab(s, lastChar+1, i, spaceCount);
+                    i = entab(s, lastChar+1, i, spaceCount, c);
 
                 lastChar = i;
             }
@@ -49,34 +49,15 @@ int getLine(char s[], int lim)
 }
 
 
-int entab(char s[], int lastCharIndex, int currIndex, int spaces)
+int entab(char s[], int lastCharIndex, int currIndex, int spaces, int c)
 {
     int i, numTabs, newIndex;
-
+    
     newIndex = lastCharIndex;
     numTabs = currIndex/TABSTOP - lastCharIndex/TABSTOP;
 
     for (i = 0; i < numTabs; i++)
         s[newIndex++] = '\t';
     
-    return (newIndex > lastCharIndex) ? newIndex + spaces : currIndex;  
+    return (newIndex > lastCharIndex || c == '\t') ? newIndex + spaces : currIndex;  
 }
-/*
-int entab(char s[], int index, int lim)
-{
-    int i, numTabs, numSpaces;
-    
-    printf("old index:%d\n", index);
-    numTabs = (lim-index)/TABSTOP;
-    numSpaces = (lim-(index+TABSTOP*numTabs))%TABSTOP;
-   
-    printf("Tabs:%d spaces:%d\n", numTabs, numSpaces);
-    for (i = 0; i < numTabs; i++)
-    {
-        s[index++] = '\t';
-    }
-    printf("new index:%d old index:%d\n", index+numSpaces, lim);
-    
-    return index+numSpaces;
-}
-*/
