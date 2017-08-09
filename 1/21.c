@@ -34,7 +34,7 @@ int getLine(char s[], int lim)
             if (c != ' ')
             {    
                 if (lastChar+1 < i)
-                    i = entab(s, lastChar+1, i+1);
+                    i = entab(s, lastChar+1, i);
 
                 lastChar = i;
             }
@@ -47,6 +47,20 @@ int getLine(char s[], int lim)
     return i;
 }
 
+
+int entab(char s[], int lastCharIndex, int currIndex)
+{
+    int i, numTabs, numSpaces, newIndex;
+
+    newIndex = lastCharIndex;
+    numTabs = currIndex/TABSTOP - lastCharIndex/TABSTOP;
+    
+    for (i = 0; i < numTabs; i++)
+        s[newIndex++] = '\t';
+
+    return (newIndex > lastCharIndex) ? newIndex + currIndex%TABSTOP : currIndex;  
+}
+/*
 int entab(char s[], int index, int lim)
 {
     int i, numTabs, numSpaces;
@@ -64,3 +78,4 @@ int entab(char s[], int index, int lim)
     
     return index+numSpaces;
 }
+*/
