@@ -7,7 +7,7 @@
 #define MAX     1000  //max line size
 
 int getLine(char s[], int lim);
-int entab(char s[], int index, int lim);
+int entab(char s[], int index, int lim, int spaces);
 
 int main()
 {
@@ -22,19 +22,20 @@ int main()
 
 int getLine(char s[], int lim)
 {
-    int c, i, lastChar;
+    int c, i, lastChar, spaceCount;
 
     i = 0;
-    lastChar = -1;
-
+    lastChar = spaceCount = -1;
     while ((c = getchar()) != EOF)
     {
+        spaceCount = (c == '\t' || spaceCount == TABSTOP-1) ? 0 : spaceCount+1;
+
         if (i < lim-1)
         {
             if (c != ' ')
             {    
                 if (lastChar+1 < i)
-                    i = entab(s, lastChar+1, i);
+                    i = entab(s, lastChar+1, i, spaceCount);
 
                 lastChar = i;
             }
@@ -48,17 +49,17 @@ int getLine(char s[], int lim)
 }
 
 
-int entab(char s[], int lastCharIndex, int currIndex)
+int entab(char s[], int lastCharIndex, int currIndex, int spaces)
 {
-    int i, numTabs, numSpaces, newIndex;
+    int i, numTabs, newIndex;
 
     newIndex = lastCharIndex;
     numTabs = currIndex/TABSTOP - lastCharIndex/TABSTOP;
-    
+
     for (i = 0; i < numTabs; i++)
         s[newIndex++] = '\t';
-
-    return (newIndex > lastCharIndex) ? newIndex + currIndex%TABSTOP : currIndex;  
+    
+    return (newIndex > lastCharIndex) ? newIndex + spaces : currIndex;  
 }
 /*
 int entab(char s[], int index, int lim)
