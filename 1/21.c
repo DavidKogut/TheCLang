@@ -7,7 +7,7 @@
 #define MAX     1000  //max line size
 
 int getLine(char s[], int lim);
-int entab(char s[], int index, int lim, int spaces, int c);
+int incrementCol(int col);
 
 int main()
 {
@@ -22,42 +22,69 @@ int main()
 
 int getLine(char s[], int lim)
 {
-    int c, i, lastChar, spaceCount;
+    int c, i, col, spaceCount, printTab;
 
-    i = 0;
-    lastChar = spaceCount = -1;
+    i = col = spaceCount = 0;
+
     while ((c = getchar()) != EOF)
     {
-        spaceCount = (c == '\t' || spaceCount == TABSTOP-1) ? 0 : spaceCount+1;
-
-        if (i < lim-1)
+        if (i < lim)
         {
-            if (c != ' ')
-            {    
-                if (lastChar+1 < i)
-                    i = entab(s, lastChar+1, i, spaceCount, c);
-
-                lastChar = i;
+            if (c == ' ')
+            {
+                spaceCount++;
+            
+                if ((spaceCount+col)%TABSTOP == 0)
+                {
+                    s[i++] = '\t';
+                    spaceCount = 0;
+                    col = 0;
+                }
             }
-            s[i++] = c;   
+            else
+            {
+                printTab = 1;
+                if (spaceCount > 0)
+                {
+                    if ((spaceCount+col)%TABSTOP == 0)
+                    {
+                        s[i++] = '\t';
+                        spaceCount = 0;
+                        col = 0;
+                    }
+
+                    if (c == '\t')
+                    {
+                        s[i++] = '\t';
+                        spaceCount = 0;
+                        col = 0;
+                        printTab = 0;
+                    }
+
+                    for (; spaceCount > 0; spaceCount--)
+                    {
+                        s[i++] = ' ';
+                        col = incrementCol(col);
+                    }
+                }
+                
+                if (c != '\t' || printTab)
+                {
+                    s[i++] = c;
+                    col = incrementCol(col);
+                }
+            }
         }
         if (c == '\n')
             break;
     }
+    
     s[i] = '\0';
+    
     return i;
 }
 
-
-int entab(char s[], int lastCharIndex, int currIndex, int spaces, int c)
+int incrementCol(int col)
 {
-    int i, numTabs, newIndex;
-    
-    newIndex = lastCharIndex;
-    numTabs = currIndex/TABSTOP - lastCharIndex/TABSTOP;
-
-    for (i = 0; i < numTabs; i++)
-        s[newIndex++] = '\t';
-    
-    return (newIndex > lastCharIndex || c == '\t') ? newIndex + spaces : currIndex;  
+    return (col+1)%TABSTOP;
 }
