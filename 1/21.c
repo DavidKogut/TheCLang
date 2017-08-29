@@ -8,6 +8,7 @@
 
 int getLine(char s[], int lim);
 int incrementCol(int col);
+int atTabStop(int s, int c);
 
 int main()
 {
@@ -20,9 +21,15 @@ int main()
     return 0;
 }
 
+/* 
+ * Since we can only return one variable at a time in functions; we're limited in breaking down
+ * this function.
+ * We have built a state machine keeping track of the amount of spaces we've inputted in a row, 
+ * and the current tabstop column position.
+ */
 int getLine(char s[], int lim)
 {
-    int c, i, col, spaceCount, printTab;
+    int c, i, col, spaceCount, printChar;
 
     i = col = spaceCount = 0;
 
@@ -30,23 +37,35 @@ int getLine(char s[], int lim)
     {
         if (i < lim)
         {
-            if (c == ' ')
+/*
+ * Space event: check how many spaces have been input, if a tab can be inerted do so, and reset the space count.
+ */
+            if (c == ' ') 
             {
                 spaceCount++;
             
-                if ((spaceCount+col)%TABSTOP == 0)
+                if (atTabStop(spaceCount, col))
                 {
                     s[i++] = '\t';
                     spaceCount = 0;
                     col = 0;
                 }
             }
+/*
+ * Non-Space event:  Was the last input a space? Then check if we can insert a tab and continue.
+ *                   Is the current input a tab? Insert a tab again and reset your counters. 
+ *                          We do this to ensure we don't print the spaces before a tab.
+ *                          Since this is only checked if the last input was a space, make sure not to print it again later.
+ *                   Print as many spaces as we have in our count.
+ *                   Print the inputted character (unless we've already handled that.)
+ */
             else
             {
-                printTab = 1;
+                printChar = 1;
+
                 if (spaceCount > 0)
                 {
-                    if ((spaceCount+col)%TABSTOP == 0)
+                    if (atTabStop(spaceCount, col))
                     {
                         s[i++] = '\t';
                         spaceCount = 0;
@@ -58,7 +77,7 @@ int getLine(char s[], int lim)
                         s[i++] = '\t';
                         spaceCount = 0;
                         col = 0;
-                        printTab = 0;
+                        printChar = 0;
                     }
 
                     for (; spaceCount > 0; spaceCount--)
@@ -68,7 +87,7 @@ int getLine(char s[], int lim)
                     }
                 }
                 
-                if (c != '\t' || printTab)
+                if (printChar)
                 {
                     s[i++] = c;
                     col = incrementCol(col);
@@ -87,4 +106,9 @@ int getLine(char s[], int lim)
 int incrementCol(int col)
 {
     return (col+1)%TABSTOP;
+}
+
+int atTabStop(int s, int c)
+{
+    return (s + c)%TABSTOP == 0;
 }
